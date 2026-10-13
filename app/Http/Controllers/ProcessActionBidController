@@ -1,0 +1,18 @@
+namespace App\Http\Controllers;
+
+use App\Http\Requests\PlaceBidRequest;
+use App\Services\AuctionService;
+
+class ProcessAuctionBidController extends Controller
+{
+    public function __invoke(PlaceBidRequest $request, AuctionService $auctionService)
+    {
+        $auctionService->placeBid(
+            auctionId: $request->validated('auction_id'),
+            amount: $request->validated('amount'),
+            userId: $request->user()->id
+        );
+
+        return response()->json(['message' => 'Bid placed successfully']);
+    }
+}
